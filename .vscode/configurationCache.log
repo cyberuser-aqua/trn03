@@ -1,0 +1,1 @@
+{"buildTargets":["clean","copy","files","load","module","unload"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

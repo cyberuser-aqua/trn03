@@ -1,0 +1,1 @@
+cmd_/home/aqua/trn03/aquadev.ko := arm-linux-gnueabihf-ld -r  -EL  --build-id=sha1  -T scripts/module.lds -o /home/aqua/trn03/aquadev.ko /home/aqua/trn03/aquadev.o /home/aqua/trn03/aquadev.mod.o;  true

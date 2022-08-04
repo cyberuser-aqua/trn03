@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "fs.h": "c",
+        "init.h": "c",
+        "pgtable.h": "c",
+        "cparser_tree.h": "c"
+    }
+}
