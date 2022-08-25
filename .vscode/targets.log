@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Aug  4 14:07:23 2022
+# Make data base, printed on Sun Aug 21 10:14:23 2022
 
 # Variables
 
@@ -17,7 +15,7 @@ make: *** No rule to make target 'all'.  Stop.
 # automatic
 ?F = $(notdir $?)
 # environment
-WSLENV = VSCODE_WSL_EXT_LOCATION/up
+WSLENV = VSCODE_WSL_EXT_LOCATION/up:VSCODE_SERVER_TAR/up
 # default
 .SHELLFLAGS := -c
 # automatic
@@ -33,7 +31,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
-_ = /home/aqua/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/node
+_ = /home/aqua/.vscode-server/bin/e4503b30fc78200f846c62cf8091b76ff5547662/node
 # makefile (from 'Makefile', line 8)
 CFLAGS = -o ./files -g -I./inc
 # makefile (from 'Makefile', line 1)
@@ -51,13 +49,15 @@ VSCODE_CWD = /mnt/c/Program Files/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/aqua/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin/remote-cli:/home/aqua/.local/bin:/home/aqua/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/PowerShell/7:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files (x86)/dotnet/:/mnt/c/Users/aqua/AppData/Local/Programs/Python/Python310/Scripts/:/mnt/c/Users/aqua/AppData/Local/Programs/Python/Python310/:/mnt/c/Users/aqua/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/aqua/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/aqua/.dotnet/tools:/snap/bin
+PATH = /home/aqua/.vscode-server/bin/e4503b30fc78200f846c62cf8091b76ff5547662/bin/remote-cli:/home/aqua/.local/bin:/home/aqua/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/PowerShell/7:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files (x86)/dotnet/:/mnt/c/Users/aqua/AppData/Local/Programs/Python/Python310/Scripts/:/mnt/c/Users/aqua/AppData/Local/Programs/Python/Python310/:/mnt/c/Users/aqua/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/aqua/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/aqua/.dotnet/tools:/snap/bin
 # environment
 XDG_RUNTIME_DIR = /mnt/wslg/runtime-dir
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-c47c61b4-aaa7-4534-9c00-2b9c5bcdbc12.sock
+VSCODE_IPC_HOOK_CLI = /mnt/wslg/runtime-dir/vscode-ipc-108e8ae3-7e4b-4e61-9502-defa8de93106.sock
+# environment
+VSCODE_SERVER_TAR = /mnt/c/Users/aqua/AppData/Local/Temp/vscode-remote-wsl/e4503b30fc78200f846c62cf8091b76ff5547662/vscode-server-stable-linux-x64.tar.gz
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -71,7 +71,7 @@ PWD = /home/aqua/trn03
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/11_interop
+WSL_INTEROP = /run/WSL/614_interop
 # environment
 PULSE_SERVER = /mnt/wslg/PulseServer
 # environment
@@ -156,8 +156,6 @@ LANG = C
 TERM = xterm-256color
 # environment
 WSL_DISTRO_NAME = Ubuntu
-# environment
-MOTD_SHOWN = update-motd
 # variable set hash-table stats:
 # Load=73/1024=7%, Rehash=0, Collisions=4/98=4%
 
@@ -167,9 +165,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 2080, inode 328106): 34 files, no impossibilities.
+# . (device 2080, inode 328106): 35 files, no impossibilities.
 
-# 34 files, no impossibilities in 1 directories.
+# 35 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -257,12 +255,14 @@ load: copy
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 45 / storage = 471 B / avg = 10 B
-# current buf: size = 8162 B / used = 471 B / count = 45 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 46 / storage = 476 B / avg = 10 B
+# current buf: size = 8162 B / used = 476 B / count = 46 / avg = 10 B
 
-# strcache performance: lookups = 64 / hit rate = 29%
+# strcache performance: lookups = 65 / hit rate = 29%
 # hash-table stats:
-# Load=45/8192=1%, Rehash=0, Collisions=5/64=8%
-# Finished Make data base on Thu Aug  4 14:07:23 2022
+# Load=46/8192=1%, Rehash=0, Collisions=5/65=8%
+# Finished Make data base on Sun Aug 21 10:14:23 2022
 
  
+make: *** No rule to make target 'all'.  Stop.
+

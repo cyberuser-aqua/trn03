@@ -1,4 +1,5 @@
 #include <cparser.h>
+#include <unistd.h>
 
 #include "cparser_tree.h"
 #include "utils.h"
@@ -60,9 +61,9 @@ cparser_result_t cparser_cmd_ru_offset_nbytes_dohex(cparser_context_t *context,
         hexdump((void *)*offset_ptr, *nbytes_ptr);
     else
     {
-        fflush(stdout);
-        printf("%.*s", (int)*nbytes_ptr, (char *)*offset_ptr);
-        fflush(stdout);
+        sync();
+        write(STDOUT_FILENO, (void *)*offset_ptr, *nbytes_ptr);
+        sync();
     }
     return CPARSER_OK;
 }
