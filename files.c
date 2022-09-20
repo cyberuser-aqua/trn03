@@ -91,6 +91,8 @@ static void interactive(void)
 
 static void interactive2(void)
 {
+    int fd = open("/proc/self/mem", O_RDWR);
+    printf("/proc/self/mem is at fd=%d\n", fd);
     cparser_t parser = {0};
     parser.cfg.root = &cparser_root;
     parser.cfg.ch_complete = '\t';
@@ -103,6 +105,7 @@ static void interactive2(void)
     cparser_io_config(&parser);
     cparser_init(&parser.cfg, &parser);
     cparser_run(&parser);
+    close(fd);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -137,6 +140,5 @@ int main(int argc, char **argv, char **envp)
         write_text(filename, offset, nbytes, argv[5]);
     else
         invalid_commandline();
-
     return 0;
 }

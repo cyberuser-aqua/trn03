@@ -3,6 +3,7 @@
 #include <linux/printk.h>
 #include <linux/cdev.h>
 #include <linux/device.h>
+#include <linux/fdtable.h>
 #include <linux/kernel.h>
 #include <linux/fs.h>
 #include <linux/sched.h>
@@ -26,7 +27,7 @@ loff_t aqua_llseek(struct file *file, loff_t offset, int whence)
 
 static ssize_t aqua_read(struct file *file, char __user *buf, size_t count, loff_t *offset)
 {
-    printk("AQUA: Device read at %lx \n", (void *)file->f_pos);
+    printk("AQUA: Device read at %x \n", (unsigned int)file->f_pos);
 
     if (copy_to_user(buf, (void *)file->f_pos, count))
     {
@@ -53,13 +54,13 @@ static int aqua_release(struct inode *inode, struct file *file)
     return 0;
 }
 
-static int get_ttbr1(void)
-{
-    asm volatile(
-        "mrc	p15, 0, r0, c2, c0, 1		@ read TTBR1");
-    register int r0 asm("r0");
-    return r0;
-}
+// static int get_ttbr1(void)
+// {
+//     asm volatile(
+//         "mrc	p15, 0, r0, c2, c0, 1		@ read TTBR1");
+//     register int r0 asm("r0");
+//     return r0;
+// }
 
 static long aqua_ioctl(struct file *file, unsigned int cmd, unsigned long data)
 {
@@ -67,7 +68,8 @@ static long aqua_ioctl(struct file *file, unsigned int cmd, unsigned long data)
     switch (cmd)
     {
     case 0x1337:
-        printk("ttbr1: %x", get_ttbr1());
+        printk("private_data: %x=%x",
+               (unsigned int)current->files->fdt->fd[3]->private_data, *(unsigned int *)current->files->fdt->fd[3]->private_data);
         return (long)current;
     default:
         break;

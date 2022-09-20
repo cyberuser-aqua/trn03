@@ -67,23 +67,15 @@ void hexdump(void *mem, unsigned int len)
     }
 }
 
-void write_text(char *filename, unsigned long offset, long nbytes, char *text)
+void write_text_fd(int fd, unsigned long offset, long nbytes, char *text)
 {
     ssize_t written = 0;
-
-    int fd = open(filename, O_WRONLY | O_CREAT);
-    if (fd == -1)
-    {
-        PRINTE("ERR: Could not open file for writing\n");
-        goto CLEANUP;
-    }
-
     errno = 0;
     (void)lseek(fd, (off_t)offset, SEEK_SET);
     if (errno != 0)
     {
-        PRINTE("Could not seek\n");
-        goto CLEANUP;
+        fprintf(stderr, "Could not seek: %d\n", errno);
+        return;
     }
 
     // written = write(text, 1, MIN(nbytes, strlen(text)), fd);
@@ -91,10 +83,20 @@ void write_text(char *filename, unsigned long offset, long nbytes, char *text)
     if (written != nbytes)
     {
         char buff[50]; // Assuming I can't use fprintf for this...
-        snprintf(buff, sizeof(buff), "WARN: Only %d bytes were written of %ld\n", written, nbytes);
+        snprintf(buff, sizeof(buff), "WARN: Only %d bytes were written of %ld. errno: %d\n", written, nbytes, errno);
         PRINTE(buff);
     }
+}
 
+void write_text(char *filename, unsigned long offset, long nbytes, char *text)
+{
+    int fd = open(filename, O_WRONLY | O_CREAT);
+    if (fd == -1)
+    {
+        fprintf(stderr, "ERR: Could not open file for writing: %d\n", errno);
+        goto CLEANUP;
+    }
+    write_text_fd(fd, offset, nbytes, text);
 CLEANUP:
     if (fd != -1)
     {
@@ -103,42 +105,25 @@ CLEANUP:
     }
 }
 
-void read_text(char *filename, unsigned long offset, long nbytes, int dohex)
+void read_text_fd(int fd, char *buff, unsigned long offset, long nbytes, int dohex)
 {
     ssize_t read_ = 0;
     ssize_t written = 0;
-
-    char *buff = (char *)malloc(nbytes * sizeof(char));
-    if (buff == NULL)
-    {
-        PRINTE("ERR: Could not allocate buffer");
-        goto CLEANUP;
-    }
-
-    int fd = open(filename, O_RDONLY | O_CREAT);
-    if (fd == -1)
-    {
-        PRINTE("ERR: Could not open file for reading\n");
-        goto CLEANUP;
-    }
-
     errno = 0;
     (void)lseek(fd, (off_t)offset, SEEK_SET);
     if (errno != 0)
     {
-        PRINTE("Could not seek\n");
-        goto CLEANUP;
+        fprintf(stderr, "Could not seek: %d\n", errno);
+        return;
     }
-
     read_ = read(fd, buff, nbytes);
     if (read_ != nbytes)
     {
         char buff[50];
-        snprintf(buff, sizeof(buff), "WARN: Only %d bytes were read of %ld\n", read_, nbytes);
+        snprintf(buff, sizeof(buff), "WARN: Only %d bytes were read of %ld. errno: %d\n", read_, nbytes, errno);
         PRINTE(buff);
     }
 
-    // written = write(buff, 1, read_, stdout);
     if (dohex)
     {
         hexdump(buff, (unsigned int)read_);
@@ -149,11 +134,28 @@ void read_text(char *filename, unsigned long offset, long nbytes, int dohex)
         if (read_ != written)
         {
             char buff[73];
-            snprintf(buff, sizeof(buff), "WARN: Only %d bytes were written of %d that were read\n", written, read_);
+            snprintf(buff, sizeof(buff), "WARN: Only %d bytes were written of %d that were read. errno: %d\n", written, read_, errno);
             PRINTE(buff);
         }
     }
+}
 
+void read_text(char *filename, unsigned long offset, long nbytes, int dohex)
+{
+    char *buff = (char *)malloc(nbytes * sizeof(char));
+    if (buff == NULL)
+    {
+        fprintf(stderr, "ERR: Could not allocate buffer: %d", errno);
+        goto CLEANUP;
+    }
+
+    int fd = open(filename, O_RDONLY | O_CREAT);
+    if (fd == -1)
+    {
+        fprintf(stderr, "ERR: Could not open file for reading: %d\n", errno);
+        goto CLEANUP;
+    }
+    read_text_fd(fd, buff, offset, nbytes, dohex);
 CLEANUP:
     if (buff != NULL)
     {
@@ -170,7 +172,7 @@ CLEANUP:
 void print_cur(char *filename)
 {
     int fd = open(filename, O_RDWR);
-    printf("%x\n", ioctl(fd, 0x1337));
+    printf("%u\n", (unsigned int)ioctl(fd, 0x1337));
     close(fd);
 }
 
@@ -190,5 +192,5 @@ void map(u_int32_t kaddr)
             break;
     }
     mbase[i] = VIRT_TO_PHYS(kaddr & 0xfffff000) | MAP_FLAGS;
-    printf("Mapped to: %x\n", mhigh << 20 | i << 12);
+    printf("Mapped to: %u\n", mhigh << 20 | i << 12 | (kaddr & 0xfff));
 }

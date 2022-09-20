@@ -3,6 +3,8 @@
         "fs.h": "c",
         "init.h": "c",
         "pgtable.h": "c",
-        "cparser_tree.h": "c"
+        "cparser_tree.h": "c",
+        "terminal_helper.h": "c",
+        "assert.h": "c"
     }
 }

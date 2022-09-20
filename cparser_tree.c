@@ -145,6 +145,60 @@ cparser_glue_wu_offset_nbytes(cparser_t *parser)
 }
 
 cparser_result_t
+cparser_glue_rf_offset_nbytes_dohex(cparser_t *parser)
+{
+    uint32_t offset_val;
+    uint32_t *offset_ptr = NULL;
+    uint32_t nbytes_val;
+    uint32_t *nbytes_ptr = NULL;
+    char *dohex_val;
+    char **dohex_ptr = NULL;
+    cparser_result_t rc;
+
+    rc = cparser_get_uint(&parser->tokens[1], &offset_val);
+    assert(CPARSER_OK == rc);
+    offset_ptr = &offset_val;
+    rc = cparser_get_uint(&parser->tokens[2], &nbytes_val);
+    assert(CPARSER_OK == rc);
+    nbytes_ptr = &nbytes_val;
+    rc = cparser_get_string(&parser->tokens[3], &dohex_val);
+    if (CPARSER_OK == rc)
+    {
+        dohex_ptr = &dohex_val;
+    }
+    else
+    {
+        assert(4 > parser->token_tos);
+    }
+    cparser_cmd_rf_offset_nbytes_dohex(&parser->context,
+                                       offset_ptr,
+                                       nbytes_ptr,
+                                       dohex_ptr);
+    return CPARSER_OK;
+}
+
+cparser_result_t
+cparser_glue_wf_offset_nbytes(cparser_t *parser)
+{
+    uint32_t offset_val;
+    uint32_t *offset_ptr = NULL;
+    uint32_t nbytes_val;
+    uint32_t *nbytes_ptr = NULL;
+    cparser_result_t rc;
+
+    rc = cparser_get_uint(&parser->tokens[1], &offset_val);
+    assert(CPARSER_OK == rc);
+    offset_ptr = &offset_val;
+    rc = cparser_get_uint(&parser->tokens[2], &nbytes_val);
+    assert(CPARSER_OK == rc);
+    nbytes_ptr = &nbytes_val;
+    cparser_cmd_wf_offset_nbytes(&parser->context,
+                                 offset_ptr,
+                                 nbytes_ptr);
+    return CPARSER_OK;
+}
+
+cparser_result_t
 cparser_glue_smap_high_base(cparser_t *parser)
 {
     uint32_t high_val;
@@ -312,6 +366,86 @@ cparser_node_t cparser_node_smap = {
     &cparser_node_map,
     &cparser_node_smap_high};
 
+cparser_node_t cparser_node_wf_offset_nbytes_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_wf_offset_nbytes,
+    "Write to fd=3 at `offset` `nbytes` bytes.",
+    NULL,
+    NULL};
+
+cparser_node_t cparser_node_wf_offset_nbytes = {
+    CPARSER_NODE_UINT,
+    0,
+    "<UINT:nbytes>",
+    NULL,
+    NULL,
+    &cparser_node_wf_offset_nbytes_eol};
+
+cparser_node_t cparser_node_wf_offset = {
+    CPARSER_NODE_UINT,
+    0,
+    "<UINT:offset>",
+    NULL,
+    NULL,
+    &cparser_node_wf_offset_nbytes};
+
+cparser_node_t cparser_node_wf = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "wf",
+    NULL,
+    &cparser_node_smap,
+    &cparser_node_wf_offset};
+
+cparser_node_t cparser_node_rf_offset_nbytes_dohex_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_rf_offset_nbytes_dohex,
+    "Read from fd=3 at `offset` `nbytes` bytes.  Set `dohex` to 'h' to preform a hexdump, otherwise prints raw data. ",
+    NULL,
+    NULL};
+
+cparser_node_t cparser_node_rf_offset_nbytes_dohex = {
+    CPARSER_NODE_STRING,
+    CPARSER_NODE_FLAGS_OPT_START | CPARSER_NODE_FLAGS_OPT_END,
+    "<STRING:dohex>",
+    NULL,
+    NULL,
+    &cparser_node_rf_offset_nbytes_dohex_eol};
+
+cparser_node_t cparser_node_rf_offset_nbytes_eol = {
+    CPARSER_NODE_END,
+    CPARSER_NODE_FLAGS_OPT_PARTIAL,
+    cparser_glue_rf_offset_nbytes_dohex,
+    NULL,
+    &cparser_node_rf_offset_nbytes_dohex,
+    NULL};
+
+cparser_node_t cparser_node_rf_offset_nbytes = {
+    CPARSER_NODE_UINT,
+    0,
+    "<UINT:nbytes>",
+    NULL,
+    NULL,
+    &cparser_node_rf_offset_nbytes_eol};
+
+cparser_node_t cparser_node_rf_offset = {
+    CPARSER_NODE_UINT,
+    0,
+    "<UINT:offset>",
+    NULL,
+    NULL,
+    &cparser_node_rf_offset_nbytes};
+
+cparser_node_t cparser_node_rf = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "rf",
+    NULL,
+    &cparser_node_wf,
+    &cparser_node_rf_offset};
+
 cparser_node_t cparser_node_wu_offset_nbytes_eol = {
     CPARSER_NODE_END,
     0,
@@ -341,7 +475,7 @@ cparser_node_t cparser_node_wu = {
     0,
     "wu",
     NULL,
-    &cparser_node_smap,
+    &cparser_node_rf,
     &cparser_node_wu_offset};
 
 cparser_node_t cparser_node_ru_offset_nbytes_dohex_eol = {

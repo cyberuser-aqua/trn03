@@ -29,6 +29,13 @@ extern "C"
     cparser_result_t cparser_cmd_wu_offset_nbytes(cparser_context_t *context,
                                                   uint32_t *offset_ptr,
                                                   uint32_t *nbytes_ptr);
+    cparser_result_t cparser_cmd_rf_offset_nbytes_dohex(cparser_context_t *context,
+                                                        uint32_t *offset_ptr,
+                                                        uint32_t *nbytes_ptr,
+                                                        char **dohex_ptr);
+    cparser_result_t cparser_cmd_wf_offset_nbytes(cparser_context_t *context,
+                                                  uint32_t *offset_ptr,
+                                                  uint32_t *nbytes_ptr);
     cparser_result_t cparser_cmd_smap_high_base(cparser_context_t *context,
                                                 uint32_t *high_ptr,
                                                 uint32_t *base_ptr);

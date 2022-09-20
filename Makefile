@@ -20,4 +20,4 @@ load: copy
 unload:
 	ssh aqua@aqua-rpi.local "sudo /usr/sbin/rmmod /tmp/aquadev.ko"
 files:
-	$(CC) $(CFLAGS) files.c utils.c cparser_tree.c cmd.c ./lib/libcparser.a
+	$(CC) $(CFLAGS) files.c utils.c cparser_tree.c cmd.c terminal_helper.c ./lib/libcparser.a
